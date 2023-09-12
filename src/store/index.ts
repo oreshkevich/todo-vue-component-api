@@ -1,6 +1,6 @@
 import {createStore} from 'vuex';
 import {v4 as uuidv4} from 'uuid';
-import {AppState, Filter, Todo} from '@/types';
+import {Todo} from '@/types';
 
 export default createStore({
   state: {

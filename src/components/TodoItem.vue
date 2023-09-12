@@ -25,7 +25,7 @@ import FormItem from '@/components/FormItem.vue';
 import TodoContent from '@/components/TodoContent.vue';
 import PanelItem from '@/components/PanelItem.vue';
 import {mapGetters, mapActions} from 'vuex';
-import {Todo} from '@/types';
+import {Todo, DragItem} from '@/types';
 
 export default defineComponent({
   name: 'TodoItem',
@@ -40,9 +40,9 @@ export default defineComponent({
 
   data() {
     return {
-      filterTodo: [] as any,
+      filterTodo: [] as Todo[],
       draggedItemIndex: null as number | null,
-      draggedItem: null as any,
+      draggedItem: null as Todo | null,
     };
   },
   computed: {
@@ -54,7 +54,7 @@ export default defineComponent({
       this.addTodo(item);
       this.filterTodo = this.todos;
     },
-    onDragStart({e, index}: any) {
+    onDragStart({e, index}: DragItem) {
       console.log(e);
       console.log(index);
 
@@ -65,16 +65,17 @@ export default defineComponent({
       const target = e.target.closest('.settings-item');
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.setData('text/plain', target);
+      console.log(this.draggedItem);
     },
-    onDragOver(index: any) {
+    onDragOver(index: number) {
       if (this.draggedItem === this.filterTodo[index]) {
         return;
       }
 
       this.filterTodo = this.filterTodo.filter(
-        (item: any): boolean => item !== this.draggedItem
+        (item: Todo): boolean => item !== this.draggedItem
       );
-      this.filterTodo.splice(index, 0, this.draggedItem);
+      this.filterTodo.splice(index, 0, this.draggedItem as Todo);
     },
   },
   mounted() {

@@ -4,17 +4,7 @@ export interface Todo {
   isActive: boolean;
 }
 
-export enum Filter {
-  All,
-  Active,
-  Completed,
-}
-
-export interface AppState {
-  todos: Todo[];
-  filter: Filter;
-}
-
-export interface RenderOptions {
-  preloadedState?: AppState;
+export interface DragItem {
+  e: EventTarget | any;
+  index: number;
 }

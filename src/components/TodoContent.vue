@@ -47,13 +47,13 @@ export default defineComponent({
       type: Number,
     },
   },
-  setup(props, context: any) {
+  setup(props, context) {
     const store = useStore();
     const {emit} = context;
     const handleChangeActive = () => {
       store.dispatch('changeActive', props.todo!.id);
     };
-    const onDragStart = (e: any, index: number): void => {
+    const onDragStart = (e: DragEvent, index: number): void => {
       emit('onDragStart', {e, index});
     };
 
