@@ -1,6 +1,6 @@
 <template>
   <button
-    :className="
+    :class="
       $store.state.filter === value
         ? 'filter-btn filter-btn_is_active'
         : 'filter-btn'

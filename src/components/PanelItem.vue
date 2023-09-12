@@ -1,7 +1,7 @@
 <template>
-  <div className="panel">
+  <div class="panel">
     <div>{{ `${getNumberActive(todos)} items left` }}</div>
-    <div className="panel__filter">
+    <div class="panel__filter">
       <FilterButton :value="0">All</FilterButton>
 
       <FilterButton :value="1">Active</FilterButton>
@@ -9,7 +9,7 @@
       <FilterButton :value="2">Completed</FilterButton>
     </div>
 
-    <button className="panel__btn" @click="handleClearCompleted">
+    <button class="panel__btn" @click="handleClearCompleted">
       Clear completed
     </button>
   </div>

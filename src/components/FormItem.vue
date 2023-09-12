@@ -1,5 +1,5 @@
 <template>
-  <form className="input" @submit.prevent="onSubmit">
+  <form class="input" @submit.prevent="onSubmit">
     <span class="input__icon">
       <svg
         stroke="currentColor"
@@ -19,7 +19,7 @@
       </svg>
     </span>
     <input
-      className="input__input"
+      class="input__input"
       type="text"
       v-model="body"
       placeholder="What needs to be done?"

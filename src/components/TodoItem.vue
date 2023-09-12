@@ -4,20 +4,13 @@
     <div class="board">
       <FormItem @onSubmit="handleSubmit" />
       <ul class="todos">
-        <li
-          v-for="todo in filterTodo"
-          :key="todo.id"
-          class="todo"
-          draggable="false"
-          style="
-            box-shadow: rgba(0, 0, 0, 0.8) 0px 0px 0px;
-            z-index: unset;
-            transform: none;
-            user-select: none;
-            touch-action: pan-x;
-          "
-        >
-          <TodoContent :todo="todo" />
+        <li v-for="(todo, index) in filterTodo" :key="todo.id">
+          <TodoContent
+            @onDragStart="onDragStart"
+            @onDragOver="onDragOver"
+            :todo="todo"
+            :index="index"
+          />
         </li>
       </ul>
 
@@ -47,7 +40,9 @@ export default defineComponent({
 
   data() {
     return {
-      filterTodo: [],
+      filterTodo: [] as any,
+      draggedItemIndex: null as number | null,
+      draggedItem: null as any,
     };
   },
   computed: {
@@ -58,6 +53,28 @@ export default defineComponent({
     handleSubmit(item: Todo) {
       this.addTodo(item);
       this.filterTodo = this.todos;
+    },
+    onDragStart({e, index}: any) {
+      console.log(e);
+      console.log(index);
+
+      this.draggedItemIndex = index;
+      if (this.draggedItemIndex !== null) {
+        this.draggedItem = this.filterTodo[this.draggedItemIndex];
+      }
+      const target = e.target.closest('.settings-item');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', target);
+    },
+    onDragOver(index: any) {
+      if (this.draggedItem === this.filterTodo[index]) {
+        return;
+      }
+
+      this.filterTodo = this.filterTodo.filter(
+        (item: any): boolean => item !== this.draggedItem
+      );
+      this.filterTodo.splice(index, 0, this.draggedItem);
     },
   },
   mounted() {

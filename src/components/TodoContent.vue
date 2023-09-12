@@ -1,31 +1,37 @@
 <template>
-  <span className="todo__radio" @click="handleChangeActive">
-    <span v-if="!todo.isActive" className="todo__check-mark">
-      <svg
-        stroke="currentColor"
-        fill="currentColor"
-        stroke-width="0"
-        viewBox="0 0 24 24"
-        height="1em"
-        width="1em"
-        xmlns="http://www.w3.org/2000/svg"
+  <div class="settings-item" @dragover="onDragOver">
+    <div draggable="true" @dragstart="onDragStart($event, index)" class="todo">
+      <span class="todo__radio" @click="handleChangeActive">
+        <span v-if="!todo.isActive" class="todo__check-mark">
+          <svg
+            stroke="currentColor"
+            fill="currentColor"
+            stroke-width="0"
+            viewBox="0 0 24 24"
+            height="1em"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g>
+              <path fill="none" d="M0 0h24v24H0z"></path>
+              <path
+                d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"
+              ></path>
+            </g>
+          </svg>
+        </span>
+      </span>
+      <span
+        :class="
+          todo.isActive
+            ? 'todo__title'
+            : 'todo__title todo__title_is_not-active'
+        "
       >
-        <g>
-          <path fill="none" d="M0 0h24v24H0z"></path>
-          <path
-            d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"
-          ></path>
-        </g>
-      </svg>
-    </span>
-  </span>
-  <span
-    :className="
-      todo.isActive ? 'todo__title' : 'todo__title todo__title_is_not-active'
-    "
-  >
-    {{ todo.title }}
-  </span>
+        {{ todo.title }}
+      </span>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -37,15 +43,27 @@ export default defineComponent({
   name: 'TodoContent',
   props: {
     todo: Object as PropType<Todo>,
+    index: {
+      type: Number,
+    },
   },
-  setup({todo}) {
+  setup(props, context: any) {
     const store = useStore();
-
+    const {emit} = context;
     const handleChangeActive = () => {
-      store.dispatch('changeActive', todo!.id);
+      store.dispatch('changeActive', props.todo!.id);
+    };
+    const onDragStart = (e: any, index: number): void => {
+      emit('onDragStart', {e, index});
+    };
+
+    const onDragOver = (): void => {
+      emit('onDragOver', props.index);
     };
     return {
       handleChangeActive,
+      onDragStart,
+      onDragOver,
     };
   },
 });
