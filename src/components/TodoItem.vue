@@ -55,17 +55,13 @@ export default defineComponent({
       this.filterTodo = this.todos;
     },
     onDragStart({e, index}: DragItem) {
-      console.log(e);
-      console.log(index);
-
       this.draggedItemIndex = index;
       if (this.draggedItemIndex !== null) {
         this.draggedItem = this.filterTodo[this.draggedItemIndex];
       }
-      const target = e.target.closest('.settings-item');
-      e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/plain', target);
-      console.log(this.draggedItem);
+      const target = (e.target as HTMLElement).closest('.settings-item');
+      e.dataTransfer!.effectAllowed = 'move';
+      e.dataTransfer!.setData('text/plain', target as unknown as string);
     },
     onDragOver(index: number) {
       if (this.draggedItem === this.filterTodo[index]) {

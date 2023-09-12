@@ -5,6 +5,6 @@ export interface Todo {
 }
 
 export interface DragItem {
-  e: EventTarget | any;
+  e: DragEvent;
   index: number;
 }
